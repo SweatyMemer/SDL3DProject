@@ -67,7 +67,7 @@ SDL_Renderer* initialiseRenderer(SDL_Window* window)
 }
 
 
-void draw(SDL_Renderer* renderer, std::unordered_map<const char *, std::bitset<16>*> letterMap)
+void draw(SDL_Renderer* renderer, std::map<const char, std::bitset<16>*> letterMap)
 {
 	// ------------------------ set's the background colour to black
 	SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
@@ -84,7 +84,6 @@ void draw(SDL_Renderer* renderer, std::unordered_map<const char *, std::bitset<1
 	rectangle.h = 100;
 
 
-	drawString(renderer, letterMap, "abcdefg", 100, 100);
 
 	SDL_RenderDrawRect(renderer, &rectangle);
 	SDL_RenderPresent(renderer);  // present the drawn shapes 
@@ -116,7 +115,7 @@ int main()
 {
 	SDL_Window* window = initialiseWindow("title brr");
 	SDL_Renderer* renderer = initialiseRenderer(window);
-	std::unordered_map<const char*, std::bitset<16>*> letterMap = initialiseCharacterMap();
+	std::map<const char, std::bitset<16>*> letterMap = initialiseCharacterMap();
 
 	// ---------------- initialise timing variables to reduce load on redeclaration
 	Uint64 start;
