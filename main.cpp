@@ -66,26 +66,23 @@ SDL_Renderer* initialiseRenderer(SDL_Window* window)
 	return _renderer;
 }
 
+void drawOverlay(SDL_Renderer* renderer, std::string fps)
+{
+	SDL_SetRenderDrawColor(renderer, 0, 255, 0, 255);
+	drawString(renderer, fps, 0, 0);
+};
 
-void draw(SDL_Renderer* renderer, std::map<const char, std::bitset<16>*> letterMap)
+void draw(SDL_Renderer* renderer, std::string fps)
 {
 	// ------------------------ set's the background colour to black
 	SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
 	SDL_RenderClear(renderer);
 	// ------------------------
 
-	SDL_SetRenderDrawColor(renderer, 0, 255, 0, 255); // set the colour of the "pen" so lines are that colour
-
-	// -------------------- initialise rectangle 
-	SDL_Rect rectangle;
-	rectangle.x = 500;
-	rectangle.y = 500;
-	rectangle.w = 100;
-	rectangle.h = 100;
 
 
+	drawOverlay(renderer, fps);
 
-	SDL_RenderDrawRect(renderer, &rectangle);
 	SDL_RenderPresent(renderer);  // present the drawn shapes 
 }
 
@@ -115,7 +112,6 @@ int main()
 {
 	SDL_Window* window = initialiseWindow("title brr");
 	SDL_Renderer* renderer = initialiseRenderer(window);
-	std::map<const char, std::bitset<16>*> letterMap = initialiseCharacterMap();
 
 	// ---------------- initialise timing variables to reduce load on redeclaration
 	Uint64 start;
@@ -127,7 +123,7 @@ int main()
 	while (true)
 	{
 		start = SDL_GetPerformanceCounter();
-		draw(renderer, letterMap);
+		draw(renderer, std::to_string(fps));
 
 		if (handleEvents(window) == (uint8_t)1)
 		{
@@ -137,6 +133,7 @@ int main()
 		end = SDL_GetPerformanceCounter();
 		elapsedMS = (end - start) / (float)SDL_GetPerformanceFrequency() * 1000.0f;
 		fps = 1000 / elapsedMS;
+
 	}
 
 }

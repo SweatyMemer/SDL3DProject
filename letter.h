@@ -730,57 +730,73 @@ std::bitset<16> zero[16]
 	std::bitset<16>(0b0001111100000000)
 };
 
-std::map<const char, std::bitset<16>* > initialiseCharacterMap() {
+std::bitset<16> dot[16]
+{
+	std::bitset<16>(0b0000000000000000),
+	std::bitset<16>(0b0000000000000000),
+	std::bitset<16>(0b0000000000000000),
+	std::bitset<16>(0b0000000000000000),
+	std::bitset<16>(0b0000000000000000),
+	std::bitset<16>(0b0000000000000000),
+	std::bitset<16>(0b0000000000000000),
+	std::bitset<16>(0b0000000000000000),
+	std::bitset<16>(0b0000000000000000),
+	std::bitset<16>(0b0000000000000000),
+	std::bitset<16>(0b0000000000000000),
+	std::bitset<16>(0b0000000000000000),
+	std::bitset<16>(0b0000000000000000),
+	std::bitset<16>(0b1110000000000000),
+	std::bitset<16>(0b1110000000000000),
+	std::bitset<16>(0b1110000000000000)
+};
 
-
-	std::map <const char, std::bitset<16>* > letterMap
-	{
-		{'a', a},
-		{'b', b},
-		{'c', c},
-		{'d', d},
-		{'e', e},
-		{'f', f},
-		{'g', g},
-		{'h', h},
-		{'i', i},
-		{'j', j},
-		{'k', k},
-		{'l', l},
-		{'m', m},
-		{'n', n},
-		{'o', o},
-		{'p', p},
-		{'q', q},
-		{'r', r},
-		{'s', s},
-		{'t', t},
-		{'u', u},
-		{'v', v},
-		{'w', w},
-		{'x', x},
-		{'y', y},
-		{'z', z},
-		{'1', one},
-		{'2', two},
-		{'3', three},
-		{'4', four},
-		{'5', five},
-		{'6', six},
-		{'7', seven},
-		{'8', eight},
-		{'9', nine},
-		{'0', zero}
-	};
-	return letterMap;
+std::map <const char, std::bitset<16>*> letterMap
+{
+	{'a', a},
+	{'b', b},
+	{'c', c},
+	{'d', d},
+	{'e', e},
+	{'f', f},
+	{'g', g},
+	{'h', h},
+	{'i', i},
+	{'j', j},
+	{'k', k},
+	{'l', l},
+	{'m', m},
+	{'n', n},
+	{'o', o},
+	{'p', p},
+	{'q', q},
+	{'r', r},
+	{'s', s},
+	{'t', t},
+	{'u', u},
+	{'v', v},
+	{'w', w},
+	{'x', x},
+	{'y', y},
+	{'z', z},
+	{'1', one},
+	{'2', two},
+	{'3', three},
+	{'4', four},
+	{'5', five},
+	{'6', six},
+	{'7', seven},
+	{'8', eight},
+	{'9', nine},
+	{'0', zero},
+	{'.', dot}
 };
 
 
-void drawLetter(SDL_Renderer* renderer, const std::bitset<16> letter[], int x, int y)
+
+void createLetterPoints(const std::bitset<16> letter[], int x, int y, std::vector<SDL_Point>* pointsToAppendTo)
 {
 
 	SDL_Point tempPoint;
-	std::vector<SDL_Point> points;
 	uint16_t count = 0;
 	uint16_t drawCount = 0;
 	for (uint8_t j = 0; j <= 15; j++)
@@ -792,18 +808,17 @@ void drawLetter(SDL_Renderer* renderer, const std::bitset<16> letter[], int x, i
 			{
 				drawCount += 1;
 				tempPoint = { x - i, y + j };
-				points.push_back(tempPoint);
+				pointsToAppendTo->push_back(tempPoint);
 			}
 		}
 	}
-	SDL_RenderDrawPoints(renderer, points.data(), drawCount);
 }
 
 
-void drawString(SDL_Renderer* renderer, std::map<const char, std::bitset<16>* > letterMap, std::string inString, int x, int y)
+void drawString(SDL_Renderer* renderer, std::string inString, int x, int y)
 {
+	std::vector<SDL_Point> points;
 	int originalX = x;
-	std::bitset<16>* tempLetter;
 	for (const char &c : inString)
 	{
 		if (c == '\n')
@@ -813,7 +828,8 @@ void drawString(SDL_Renderer* renderer, std::map<const char, std::bitset<16>* > 
 			continue;
 		};
 
-		drawLetter(renderer, letterMap[c], x, y);
+		createLetterPoints(letterMap[c], x, y, &points);
 		x += 16;
 	};
+	SDL_RenderDrawPoints(renderer, points.data(), points.size());
 }
