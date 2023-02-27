@@ -1,10 +1,11 @@
-#include <SDL.h>
+#include <SDL2/SDL.h>
 #include <stdio.h>
 #include <wtypes.h>
 #include <fmt/format.h>
 #include "letter.h"
 #include "debugging.h"
 #include <ctime>
+#include "shapes.h"
 #undef main
 
 void closeEverything(SDL_Window* window)
@@ -79,8 +80,9 @@ void draw(SDL_Renderer* renderer, std::string fps)
 	SDL_RenderClear(renderer);
 	// ------------------------
 
-
-
+	rectangle rect(100, 100, 200, 200, 0);
+	rect.resize(1);
+	rect.draw(renderer, 0,255,0,255);
 	drawOverlay(renderer, fps);
 
 	SDL_RenderPresent(renderer);  // present the drawn shapes 

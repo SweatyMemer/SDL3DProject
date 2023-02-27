@@ -29,5 +29,8 @@
     <ClInclude Include="debugging.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="shapes.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

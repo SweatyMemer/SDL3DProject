@@ -1,6 +1,6 @@
 #pragma once
 #include <string>
-#include <SDL.h>
+#include <SDL2/SDL.h>
 #include <iostream>
 
 void screenshot(SDL_Renderer* renderer, std::string fileName)
